@@ -1,0 +1,10 @@
+                 U ___error
+0000000100000000 T __mh_execute_header
+                 U _exit
+                 U _malloc
+                 U _strcmp
+                 U _strerror
+                 U _strlen
+                 U _write
+                 U _writev
+                 U dyld_stub_binder
