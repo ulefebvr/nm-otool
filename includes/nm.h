@@ -9,14 +9,17 @@
 # define ERR_USAGE				"nm  [ -agnoprumxj ]"
 # define NM_OPTIONS				"npraguUxj"
 
+# define IS_UNDEF(x)			(x == 'U' || x == 'u')
+
 # define OPT_N					0x001
 # define OPT_P					0x002
 # define OPT_R					0x004
 # define OPT_A					0x008
-# define OPT_LU					0x010
-# define OPT_BU					0x020
-# define OPT_X					0x040
-# define OPT_J					0x080
+# define OPT_G					0x010
+# define OPT_LU					0x020
+# define OPT_BU					0x040
+# define OPT_X					0x080
+# define OPT_J					0x100
 
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_stc;

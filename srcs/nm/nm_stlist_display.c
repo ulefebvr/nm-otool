@@ -41,6 +41,13 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 {
 	while (stlist)
 	{
+		if ((options & OPT_G) // creer define pour checker si global
+			|| (options & OPT_LU && !IS_UNDEF(stlist->type))
+			|| (options & OPT_BU && IS_UNDEF(stlist->type))) 
+		{
+			stlist = stlist->next;
+			continue ;
+		}
 		ft_print_value(stlist, stlist->value, ofile->filetype, 16);
 		ft_print(" %c %s\n", stlist->type, stlist->name);
 		stlist = stlist->next;
