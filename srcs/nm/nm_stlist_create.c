@@ -5,8 +5,7 @@
 #include "swap.h"
 #include "libft.h"
 
-static char			*get_the_corresponding_section_64(
-	t_ofile *ofile, uint8_t n_sect)
+static char			*section_64(t_ofile *ofile, uint8_t n_sect)
 {
 	uint32_t			i;
 	uint32_t			ncmds;
@@ -35,8 +34,7 @@ static char			*get_the_corresponding_section_64(
 	return (0);
 }
 
-static char			*get_the_corresponding_section_32(
-	t_ofile *ofile, uint8_t n_sect)
+static char			*section_32(t_ofile *ofile, uint8_t n_sect)
 {
 	uint32_t			i;
 	uint32_t			ncmds;
@@ -72,24 +70,18 @@ static char			get_type_letter(
 	char			*section_name;
 
 	type = 0;
-	if ((n_type & N_TYPE) == N_INDR)
-		type = 'I';
-	else if ((n_type & N_TYPE) == N_STAB)
-		type = '-';
-	else if ((n_type & N_TYPE) == N_UNDF && (n_type & N_EXT) && n_value != 0)
-		type = 'C';
-	else if ((n_type & N_TYPE) == N_UNDF)
+	type = ((n_type & N_TYPE) == N_INDR) ? 'I' : type;
+	type = (!type && (n_type & N_TYPE) == N_STAB) ? '-' : type;
+	type = (!type && (n_type & N_TYPE) == N_UNDF
+		&& (n_type & N_EXT) && n_value != 0) ? 'C' : type;
+	type = (!type && (n_type & N_TYPE) == N_UNDF
+		&& (n_type & N_TYPE) == N_PBUD) ? 'u' : type;
+	type = (!type && (n_type & N_TYPE) == N_UNDF) ? 'U' : type;
+	type = (!type && (n_type & N_TYPE) == N_ABS) ? 'A' : type;
+	if (!type && (n_type & N_TYPE) == N_SECT)
 	{
-		type = ((n_type & N_TYPE) == N_PBUD) ? 'u' : 'U';
-
-	}
-	else if ((n_type & N_TYPE) == N_ABS)
-		type = 'A';
-	else if ((n_type & N_TYPE) == N_SECT)
-	{
-		section_name = (ofile->filetype == 8) ? 
-			get_the_corresponding_section_32(ofile, n_sect) :
-			get_the_corresponding_section_64(ofile, n_sect) ;
+		section_name = (ofile->filetype == 8) ?
+			section_32(ofile, n_sect) : section_64(ofile, n_sect);
 		if (section_name && !ft_strcmp(section_name, SECT_TEXT))
 			type = 'T';
 		else if (section_name && !ft_strcmp(section_name, SECT_DATA))
