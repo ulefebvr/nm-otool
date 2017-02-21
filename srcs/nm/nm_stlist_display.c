@@ -1,6 +1,8 @@
 #include "nm.h"
 #include "libft.h"
 
+#include <mach-o/stab.h>
+
 static int		ft_nbrlen_base(uint64_t i, int base)
 {
 	return ((i < (uint64_t)base) ? 1 : 1 + ft_nbrlen_base(i / base, base));
@@ -41,15 +43,22 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 {
 	while (stlist)
 	{
-		if ((options & OPT_G) // creer define pour checker si global
+		if (((options & OPT_G) && ((stlist->n_type & N_STAB) == N_GSYM)
+				&& (stlist->n_type & N_EXT))
 			|| (options & OPT_LU && !IS_UNDEF(stlist->type))
-			|| (options & OPT_BU && IS_UNDEF(stlist->type))) 
+			|| (options & OPT_BU && IS_UNDEF(stlist->type))
+			|| (stlist->type == '-' && !(options & OPT_A)))
 		{
 			stlist = stlist->next;
 			continue ;
 		}
-		ft_print_value(stlist, stlist->value, ofile->filetype, 16);
-		ft_print(" %c %s\n", stlist->type, stlist->name);
+		if (!(options & OPT_J))
+		{
+			ft_print_value(stlist, stlist->value, ofile->filetype,
+				(options & OPT_X) ? 10 : 16);
+			ft_print(" %c ", stlist->type);
+		}
+		ft_print("%s\n", stlist->name);
 		stlist = stlist->next;
 	}
 }

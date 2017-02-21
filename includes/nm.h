@@ -27,6 +27,7 @@ typedef struct symtab_command	t_stc;
 typedef struct					s_symtab
 {
 	uint32_t					n_strx;
+	uint8_t						n_type;
 	uint64_t					value;
 	char						type;
 	char						*name;
@@ -36,6 +37,7 @@ typedef struct					s_symtab
 }								t_symtab;
 
 t_symtab						*nm_load_macho_command(uint32_t magic, t_ofile *ofile);
+t_symtab						*nm_load_fat_command(uint32_t magic, t_ofile *ofile);
 t_symtab						*nm_get_stlist(t_ofile *ofile);
 t_symtab						*add_new_stlist(t_symtab *tail, char *stringtable, struct nlist info, t_ofile *ofile);
 t_symtab						*add_new_stlist_64(t_symtab *tail, char *stringtable, struct nlist_64 info, t_ofile *ofile);
