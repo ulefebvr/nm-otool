@@ -42,7 +42,7 @@
  * and contains the constants for the possible values of these types.
  */
 #include <stdint.h>
-// #include <mach/machine.h>
+#include <mach/machine.h>
 // #include <architecture/byte_order.h>
 
 typedef int			integer_t;

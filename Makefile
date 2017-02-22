@@ -14,7 +14,7 @@ TARGET_EXEC ?= nm
 
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./srcs
-# INC_DIR ?= 
+# INC_DIR ?= ./includes
 
 
 SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
@@ -22,8 +22,7 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 # INC_DIRS := $(shell find $(INC_DIR) -type d)
-INC_FLAGS := $(addprefix -I, ./includes ./includes/sys/ ./lib/libft/includes \
-./lib/option/includes)
+INC_FLAGS := $(addprefix -I, ./includes ./includes/sys ./lib/libft/includes ./lib/option/includes)
 
 # CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
 CFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra

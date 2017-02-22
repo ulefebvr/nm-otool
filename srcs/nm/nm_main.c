@@ -39,10 +39,12 @@ static void			nm(t_ofile *ofile, int options)
 {
 	t_symtab		*stlist;
 
-	stlist = nm_get_stlist(ofile);
-	stlist = nm_stlist_sort(stlist, options);
-	nm_stlist_display(stlist, ofile, options);
-	nm_stlist_free(stlist);
+	if ((stlist = nm_get_stlist(ofile)))
+	{
+		stlist = nm_stlist_sort(stlist, options);
+		nm_stlist_display(stlist, ofile, options);
+		nm_stlist_free(stlist);
+	}
 }
 
 int					main(int ac, char **av)

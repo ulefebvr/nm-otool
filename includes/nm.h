@@ -21,8 +21,12 @@
 # define OPT_X					0x080
 # define OPT_J					0x100
 
+typedef struct mach_header		t_mh;
 typedef struct load_command		t_lc;
 typedef struct symtab_command	t_stc;
+typedef struct fat_header		t_fh;
+typedef struct fat_arch			t_arch32;
+typedef struct fat_arch_64		t_arch64;
 
 typedef struct					s_symtab
 {
