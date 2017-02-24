@@ -10,19 +10,24 @@
 #                                                                              #
 # **************************************************************************** #
 
-TARGET_EXEC ?= nm
+TARGET_EXEC1 ?= nm
+TARGET_EXEC2 ?= otool
 
 BUILD_DIR ?= ./build
-SRC_DIRS ?= ./srcs
+SRC_DIRS1 ?= ./srcs/
+SRC_DIRS2 ?= ./srcs/
 # INC_DIR ?= ./includes
 
 
-SRCS := $(shell find $(SRC_DIRS) -name '*.cpp' -or -name '*.c' -or -name '*.s')
-OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
+SRCS1 := $(shell find $(SRC_DIRS1) -name '*.cpp' -or -name '*.c' -or -name '*.s' | grep -v "/otool/")
+SRCS2 := $(shell find $(SRC_DIRS2) -name '*.cpp' -or -name '*.c' -or -name '*.s' | grep -v "/nm/")
+OBJS1 := $(SRCS1:%=$(BUILD_DIR)/%.o)
+OBJS2 := $(SRCS2:%=$(BUILD_DIR)/%.o)
+OBJS := $(OBJS1) $(OBJS2)
 DEPS := $(OBJS:.o=.d)
 
 # INC_DIRS := $(shell find $(INC_DIR) -type d)
-INC_FLAGS := $(addprefix -I, ./includes ./includes/sys ./lib/libft/includes ./lib/option/includes)
+INC_FLAGS := $(addprefix -I, ./includes ./includes/macosxheader ./lib/libft/includes ./lib/option/includes)
 
 # CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
 CFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
@@ -31,14 +36,17 @@ CFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
 # Libraries (-lfoo) should be added to the LDLIBS variable instead.
 LDFLAGS ?= -L lib/libft -lft -L lib/option -loption
 
-all: $(TARGET_EXEC) $(OBJS)
+all: $(TARGET_EXEC1) $(TARGET_EXEC2) $(OBJS) ./lib
 
 # $(TARGET_EXEC): $(OBJS)
 # 	ar rc $(TARGET_EXEC) $(OBJS)
 # 	ranlib $(TARGET_EXEC)
 
-$(TARGET_EXEC): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(LDFLAGS)
+$(TARGET_EXEC2): $(OBJS2) ./lib
+	$(CC) -o $@ $(OBJS2) $(LDFLAGS)
+
+$(TARGET_EXEC1): $(OBJS1) ./lib
+	$(CC) -o $@ $(OBJS1) $(LDFLAGS)
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
@@ -61,7 +69,7 @@ clean:
 	$(RM) -r $(BUILD_DIR)
 
 fclean: clean
-	$(RM) $(TARGET_EXEC)
+	$(RM) $(TARGET_EXEC1) $(TARGET_EXEC2)
 
 re: fclean
 	make
