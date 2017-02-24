@@ -20,6 +20,7 @@
 # define OPT_BU					0x040
 # define OPT_X					0x080
 # define OPT_J					0x100
+# define AR_T					0x200
 
 typedef struct mach_header		t_mh;
 typedef struct load_command		t_lc;
@@ -42,6 +43,7 @@ typedef struct					s_symtab
 
 t_symtab						*nm_load_macho_command(uint32_t magic, t_ofile *ofile);
 t_symtab						*nm_load_fat_command(uint32_t magic, t_ofile *ofile);
+t_symtab						*nm_load_archive_command(t_ofile *ofile);
 t_symtab						*nm_get_stlist(t_ofile *ofile);
 t_symtab						*add_new_stlist(t_symtab *tail, char *stringtable, struct nlist info, t_ofile *ofile);
 t_symtab						*add_new_stlist_64(t_symtab *tail, char *stringtable, struct nlist_64 info, t_ofile *ofile);
