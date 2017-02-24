@@ -1,0 +1,58 @@
+#include <stdlib.h>
+
+#include "misc.h"
+
+static void			decalage(t_archive **ar, uint32_t i, uint32_t n)
+{
+	free(ar[i]);
+	while (i < n - 1)
+	{
+		ar[i] = ar[i + 1];
+		i++;
+	}
+}
+
+static void			remove_duplicate(t_archive **ar, uint32_t *size)
+{
+	uint32_t		i;
+
+	i = 0;
+	while (i < *size - 1)
+	{
+		if (ar[i]->offset == ar[i + 1]->offset)
+		{
+			decalage(ar, i, *size);
+			--*size;
+		}
+		else
+		{
+			i++;
+		}
+	}	
+}
+
+void				sort(t_archive **ar, uint32_t *size)
+{
+	uint32_t		i;
+	uint32_t		j;
+	t_archive		*tmp;
+
+	i = 0;
+	j = 0;
+	while (i < *size)
+	{
+		j = i + 1;
+		while (j < *size)
+		{
+			if (ar[i]->offset > ar[j]->offset)
+			{
+				tmp = ar[i];
+				ar[i] = ar[j];
+				ar[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	remove_duplicate(ar, size);
+}
