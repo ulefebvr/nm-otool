@@ -19,18 +19,17 @@ t_symtab			*nm_get_stlist(t_ofile *ofile)
 	misc_check_filetype(swap_uint32_t(magic, ofile->swap), &(ofile->filetype));
 	if (misc_is_macho_file(magic))
 	{
-		ft_print("\033[31m%s\033[0m\n", "MACHO FILE");
 		ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
 		stlist = nm_load_macho_command(magic, ofile);
 	}
 	else if (misc_is_fat(magic))
 	{
-		ft_print("\033[31m%s\033[0m\n", "FAT FILE");
 		stlist = nm_load_fat_command(magic, ofile);
 	}
-	else if (!strncmp(ofile->ptr, ARMAG, SARMAG))
+	else if (!ft_strncmp(ofile->ptr, ARMAG, SARMAG))
 	{
-		ft_print("\033[31m%s\033[0m\n", "ARCHIVE");
+		ft_print("\033[32;1mARCHIVE\n\033[0m");
+		stlist = nm_load_archive_command(ofile);
 	}
 	else
 	{

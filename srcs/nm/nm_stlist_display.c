@@ -26,12 +26,12 @@ static int		ft_putunbr_base(uint64_t i, int base, int capitals)
 }
 
 static void		ft_print_value(
-	t_symtab *stlist, uint64_t value, int type, int base)
+	t_symtab *stlist, int options, int type, int base)
 {
-	if (stlist->value != 0)
+	if (stlist->value != 0 || ((options & AR_T) && stlist->type == 'T'))
 	{
-		write(1, "0000000000000000", type - ft_nbrlen_base(value, base));
-		ft_putunbr_base(value, base, 0);
+		write(1, "0000000000000000", type - ft_nbrlen_base(stlist->value, base));
+		ft_putunbr_base(stlist->value, base, 0);
 	}
 	else
 	{
@@ -45,6 +45,7 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 	{
 		if (((options & OPT_G) && ((stlist->n_type & N_STAB) == N_GSYM)
 				&& (stlist->n_type & N_EXT))
+			|| stlist->type == 0
 			|| (options & OPT_LU && !IS_UNDEF(stlist->type))
 			|| (options & OPT_BU && IS_UNDEF(stlist->type))
 			|| (stlist->type == '-' && !(options & OPT_A)))
@@ -54,7 +55,7 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 		}
 		if (!(options & OPT_J))
 		{
-			ft_print_value(stlist, stlist->value, ofile->filetype,
+			ft_print_value(stlist, options, ofile->filetype,
 				(options & OPT_X) ? 10 : 16);
 			ft_print(" %c ", stlist->type);
 		}
