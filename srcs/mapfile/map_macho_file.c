@@ -10,7 +10,7 @@ t_subtype		get_macho_subtype(t_mapfile *map)
 		map->magic = swap_uint32_t(map->magic, &map->macho_swap);
 		return (B32);
 	}
-	else
+	else if (map->magic == MH_MAGIC_64 || map->magic == MH_CIGAM_64)
 	{
 		map->macho_swap = (map->magic == MH_CIGAM_64);
 		map->magic = swap_uint32_t(map->magic, &map->macho_swap);
@@ -19,7 +19,7 @@ t_subtype		get_macho_subtype(t_mapfile *map)
 	return (0);
 }
 
-t_mapfile		*map_maho_getheader(t_mapfile *map)
+t_mapfile		*map_macho_getheader(t_mapfile *map)
 {
 	map->macho_subtype = get_macho_subtype(map->magic);
 	if (map->macho_subtype == B32 || map->macho_subtype == B64)
@@ -32,6 +32,7 @@ t_mapfile		*map_maho_getheader(t_mapfile *map)
 			return (map_release(map));
 		}
 		ft_memcpy(&map->macho_header, map->file_addr, sizeof(t_mh));
+		map->macho_header.magic = map->magic;
 		map->macho_header.ncmds =
 			swap_uint32_t(map->macho_header.ncmds, map->macho_swap);
 		map->macho_header.sizeofcmds =
@@ -50,7 +51,7 @@ t_mapfile		*map_macho_getlc(t_mapfile *map)
 	size_t		size_struct;
 
 	size_struct = sizeof(t_mh) + ((map->file_type == B64) * sizeof(uint32_t));
-	if (map->file_size < size_struct + map->macho_header.sizeofcmds)
+	if (map->file_size >= size_struct + map->macho_header.sizeofcmds)
 	{
 		map->macho_lc = (char *)map->file_addr + size_struct;
 	}
@@ -109,7 +110,7 @@ t_mapfile		*map_check_segment64(t_mapfile *map, t_sc64 *segment)
 	return (map);
 }
 
-t_mapfile		*map_check_segment(t_mapfile *map, t_lc *lc_segment)
+t_mapfile		*map_check_segments(t_mapfile *map, t_lc *lc_segment)
 {
 	map->macho_segment = lc_segment;
 	if (lc_segment->cmd == LC_SEGMENT)
@@ -120,7 +121,7 @@ t_mapfile		*map_check_segment(t_mapfile *map, t_lc *lc_segment)
 	else if (lc_segment->cmd == LC_SEGMENT_64)
 	{
 		if (map->file_size >= ((char *)lc_segment - map->file_addr) + sizeof(t_sc64))		
-			return (map_check_segment32(map, (t_sc64 *)lc_segment));
+			return (map_check_segment64(map, (t_sc64 *)lc_segment));
 	}
 	return (map_release(map));
 }

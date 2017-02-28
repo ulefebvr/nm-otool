@@ -32,7 +32,8 @@ static t_mapfile	*get_map_struct(t_mapfile *map_arg)
 
 	if (NULL == (map = map_arg))
 	{
-		map = (t_mapfile *)ft_memalloc(sizeof(t_mapfile));
+		if ((map = (t_mapfile *)ft_memalloc(sizeof(t_mapfile))))
+			map_release(NULL);
 	}
 	return (map);
 }
@@ -73,5 +74,5 @@ t_mapfile			*map_file_from_mem(
 	map->file_addr = file_addr;
 	if (UNKNOW == (map->file_type = map_detect_type(map)))
 		return (map_release(map));
-	return (map_appropriate_file(map));
+	return (map_appropriate(map));
 }
