@@ -25,7 +25,7 @@ t_mapfile		*map_check_arch_64(t_mapfile *map)
 	}
 	return (map);
 }
-
+ 
 t_mapfile		*map_check_arch_32(t_mapfile *map)
 {
 	void	*save_file_addr;
