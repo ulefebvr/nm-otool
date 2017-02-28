@@ -30,6 +30,15 @@ struct segment_command_64	t_sc64;
 typedef
 struct symtab_command	t_symtab;
 
+typedef
+struct fat_header	t_fh;
+
+typedef
+struct fat_arch	t_fa32;
+
+typedef
+struct fat_arch_64	t_fa64;
+
 typedef struct		s_mapfile
 {
 	char			*file_name;
@@ -45,6 +54,12 @@ typedef struct		s_mapfile
 	t_lc			*macho_lc;
 	t_lc			*macho_segment;
 	t_symtab		*macho_symtab;
+\
+	t_subtype		fat_subtype;
+	char			fat_swap;
+	t_fh			fat_header;
+	t_fa32			fat_ah_32;
+	t_fa64			fat_ah_64;
 }					t_mapfile;
 
 t_ofile				*mapfile(char *fname);
