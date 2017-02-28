@@ -66,7 +66,7 @@ t_mapfile		*map_macho_getlc(t_mapfile *map)
 			map->file_name);
 		return (map_release(map));
 	}
-	return (0);
+	return (map);
 }
 
 t_mapfile		*map_check_segment32(t_mapfile *map, t_sc32 *segment)
