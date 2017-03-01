@@ -3,7 +3,26 @@
 #include "libft.h"
 #include "mach-o/ranlib.h"
 
-#include <stdio.h>
+t_mapfile		*map_arch_check_ranlib_64(t_mapfile *map)
+{
+	uint32_t	i;
+	char 		*function_name;
+	void 		*tmp;
+
+	i = 0;
+	tmp = map->file_addr;
+	while (i < map->arch_nranlib)
+	{
+		function_name = (char *)map->file_addr + map->arch_rl64[i].ran_off + sizeof(t_ar);
+		map->file_addr = (tmp + map->arch_rl64[i].ran_off + sizeof(t_ar) + ft_atoi(((t_ar *)((char *)map->file_addr + map->arch_rl64[i].ran_off))->ar_name + 3));
+		map->file_name = function_name;
+		if (map_file_from_mem(map, NULL, NULL, 0) == NULL)
+			return (NULL);
+		map->file_addr = tmp;
+		i++;
+	}
+	return (map);
+}
 
 t_mapfile		*map_arch_check_ranlib_32(t_mapfile *map)
 {
@@ -12,20 +31,12 @@ t_mapfile		*map_arch_check_ranlib_32(t_mapfile *map)
 	void 		*tmp;
 
 	i = 0;
-	printf("Vérif: \033[032m %u \033[0m\n", map->arch_nranlib);
+	tmp = map->file_addr;
 	while (i < map->arch_nranlib)
 	{
 		function_name = (char *)map->file_addr + map->arch_rl32[i].ran_off + sizeof(t_ar);
-		tmp = map->file_addr;
-		map->file_addr = (map->file_addr + map->arch_rl32[i].ran_off + sizeof(t_ar) + ft_atoi(map->arch_header.ar_name + 3));
+		map->file_addr = (tmp + map->arch_rl32[i].ran_off + sizeof(t_ar) + ft_atoi(((t_ar *)((char *)map->file_addr + map->arch_rl32[i].ran_off))->ar_name + 3));
 		map->file_name = function_name;
-		// printf("-> %-20s, %d - %5d - %lu - %x\n",
-		// 	function_name,
-		// 	ft_atoi(map->arch_header.ar_name + 3),
-		// 	map->arch_rl32[i].ran_off,
-		// 	sizeof(t_ar),
-		// 	*(unsigned int *)map->file_addr
-		// );
 		if (map_file_from_mem(map, NULL, NULL, 0) == NULL)
 			return (NULL);
 		map->file_addr = tmp;
@@ -60,8 +71,11 @@ t_mapfile		*map_arch_get_nranlib(t_mapfile *map)
 		ft_fdprint(2, "File %s is corrupted\n", map->file_name);
 		return (map_release(map));
 	}
-	size = *(uint32_t *)(map->file_addr + SARMAG + sizeof(struct ar_hdr) + 20);
-	map->arch_nranlib = size / sizeof(struct ranlib);
+	size = *(uint32_t *)(map->file_addr + SARMAG + sizeof(t_ar) + 20);
+	if (map->arch_subtype == B32)
+		map->arch_nranlib = size / sizeof(t_rl32);
+	else
+		map->arch_nranlib = size / sizeof(t_rl64);
 	return (map);	
 }
 
@@ -97,8 +111,7 @@ t_mapfile		*map_arch_file(t_mapfile *map)
 		return (NULL);
 	if (map->arch_subtype == B32 && map_arch_check_ranlib_32(map) == NULL)
 		return (NULL);
-	// else if (map->arch_subtype == B64 && map_arch_check_ranlib_32(map) == NULL)
-	// 	return (NULL);
-ft_fdprint(2, "\033[033mFile: \033[032m%s \033[033mLine: \033[032m%d\033[0m\n", __FILE__, __LINE__);
+	else if (map->arch_subtype == B64 && map_arch_check_ranlib_64(map) == NULL)
+		return (NULL);
 	return (map);
 }
