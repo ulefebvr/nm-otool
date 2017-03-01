@@ -26,14 +26,17 @@ static t_type		map_detect_type(t_mapfile *map)
 	return (UNKNOW);
 }
 
-static t_mapfile	*get_map_struct(t_mapfile *map_arg)
+static t_mapfile	*get_map_struct(t_mapfile *map_arg, char *file_name, void *file_addr, size_t file_size)
 {
 	t_mapfile		*map;
 
 	if (NULL == (map = map_arg))
 	{
 		if ((map = (t_mapfile *)ft_memalloc(sizeof(t_mapfile))))
-			map_release(NULL);
+			map_release(NULL);	
+		map->file_name = file_name;
+		map->file_size = file_size;
+		map->file_addr = file_addr;
 	}
 	return (map);
 }
@@ -67,11 +70,9 @@ t_mapfile			*map_file_from_mem(
 {
 	t_mapfile		*map;
 
-	if (NULL == (map = get_map_struct(map_arg)))
+
+	if (NULL == (map = get_map_struct(map_arg, file_name, file_addr, file_size)))
 		return (map_release(map));
-	map->file_name = file_name;
-	map->file_size = file_size;
-	map->file_addr = file_addr;
 	if (UNKNOW == (map->file_type = map_detect_type(map)))
 		return (map_release(map));
 	return (map_appropriate(map));

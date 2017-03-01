@@ -5,6 +5,7 @@
 
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
+# include <mach-o/fat.h>
 
 typedef enum		e_type
 {
@@ -60,13 +61,13 @@ typedef struct		s_mapfile
 	t_mh			macho_header;
 	t_lc			*macho_lc;
 	t_lc			*macho_segment;
-	t_symtab		*macho_symtab;
+	t_sytab			macho_symtab;
 \
 	t_subtype		fat_subtype;
 	char			fat_swap;
 	t_fh			fat_header;
-	t_fa32			fat_ah_32;
-	t_fa64			fat_ah_64;
+	t_fa32			*fat_ah_32;
+	t_fa64			*fat_ah_64;
 }					t_mapfile;
 
 t_ofile				*mapfile(char *fname);
