@@ -51,6 +51,7 @@ typedef struct		s_mapfile
 	t_mh			macho_header;
 	t_lc			*macho_lc;
 	t_lc			*macho_segment;
+	t_s64			*macho_sections;
 	t_sytab			macho_symtab;
 }					t_mapfile;
 
