@@ -83,10 +83,12 @@ t_mapfile		*map_check_segment32(t_mapfile *map, t_sc32 *segment)
 		ft_fdprint(2, "Problem file %s, check segments\n", map->file_name);
 		return (map_release(map));
 	}
-	sections = (t_s32 *)(segment + sizeof(t_sc32));
+	sections = (t_s32 *)((char *)segment + sizeof(t_sc32));
 	while (i < nsects)
 	{
-		if (map->file_size < sections[i].offset + sections[i].size)
+		if (map->file_size
+			< swap_uint32_t(sections[i].offset, map->macho_swap)
+			+ swap_uint32_t(sections[i].size, map->macho_swap))
 			return (map_release(map));
 		i++;
 	}
@@ -100,6 +102,7 @@ t_mapfile		*map_check_segment64(t_mapfile *map, t_sc64 *segment)
 	t_s64		*sections;
 
 	i = 0;
+	ft_fdprint(2, "\033[32m%d\033[0m\n", (map->macho_swap == 1));
 	nsects = swap_uint32_t(segment->nsects, map->macho_swap);
 	if (map->file_size
 		< ((char *)segment - (char *)map->file_addr) + sizeof(t_sc64))
@@ -107,10 +110,12 @@ t_mapfile		*map_check_segment64(t_mapfile *map, t_sc64 *segment)
 		ft_fdprint(2, "Problem file %s, check segments\n", map->file_name);
 		return (map_release(map));
 	}
-	sections = (t_s64 *)(segment + sizeof(t_sc64));
+	sections = (t_s64 *)((char *)segment + sizeof(t_sc64));
 	while (i < nsects)
 	{
-		if (map->file_size < sections[i].offset + sections[i].size)
+		if (map->file_size
+			< swap_uint32_t(sections[i].offset, map->macho_swap)
+			+ swap_uint32_t(sections[i].size, map->macho_swap))
 			return (map_release(map));
 		i++;
 	}
