@@ -102,7 +102,6 @@ t_mapfile		*map_check_segment64(t_mapfile *map, t_sc64 *segment)
 	t_s64		*sections;
 
 	i = 0;
-	ft_fdprint(2, "\033[32m%d\033[0m\n", (map->macho_swap == 1));
 	nsects = swap_uint32_t(segment->nsects, map->macho_swap);
 	if (map->file_size
 		< ((char *)segment - (char *)map->file_addr) + sizeof(t_sc64))

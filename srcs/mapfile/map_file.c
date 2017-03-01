@@ -70,7 +70,6 @@ t_mapfile			*map_file_from_mem(
 {
 	t_mapfile		*map;
 
-
 	if (NULL == (map = get_map_struct(map_arg, file_name, file_addr, file_size)))
 		return (map_release(map));
 	if (UNKNOW == (map->file_type = map_detect_type(map)))
