@@ -25,7 +25,7 @@ t_mapfile		*map_check_arch_64(t_mapfile *map)
 	}
 	return (map);
 }
- 
+
 t_mapfile		*map_check_arch_32(t_mapfile *map)
 {
 	void	*save_file_addr;
@@ -110,7 +110,7 @@ t_mapfile		*map_get_arch_header(t_mapfile *map)
 	return (map);
 }
 
-t_mapfile		*map_get_header(t_mapfile *map)
+t_mapfile		*map_get_fat_header(t_mapfile *map)
 {
 	map->fat_subtype = get_fat_subtype(map);
 	if (map->fat_subtype == 32 || map->fat_subtype == 64)
@@ -133,7 +133,7 @@ t_mapfile		*map_get_header(t_mapfile *map)
 
 t_mapfile		*map_fat_file(t_mapfile *map)
 {
-	if (map_get_header(map) == NULL)
+	if (map_get_fat_header(map) == NULL)
 		return (NULL);
 	if (map_get_arch_header(map) == NULL)
 		return (NULL);

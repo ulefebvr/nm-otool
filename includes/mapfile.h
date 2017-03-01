@@ -61,7 +61,7 @@ typedef struct		s_mapfile
 	t_fa32			fat_ah_32;
 	t_fa64			fat_ah_64;
 }					t_mapfile;
- 
+
 t_ofile				*mapfile(char *fname);
 void				unmapfile(t_ofile *ofile);
 
