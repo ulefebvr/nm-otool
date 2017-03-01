@@ -45,14 +45,12 @@ t_mapfile			*map_release(t_mapfile *map)
 {
 	static int		malloced;
 
+	if (map && map->macho_sections)
+		free(map->macho_sections);
 	if (map == NULL)
-	{
 		malloced = 1;
-	}
 	else if (malloced)
-	{
 		free(map);
-	}
 	return (NULL);
 }
 
