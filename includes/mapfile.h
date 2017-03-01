@@ -3,7 +3,8 @@
 
 # include "misc.h"
 
-# include "mach-o/loader.h"
+# include <mach-o/loader.h>
+# include <mach-o/nlist.h>
 
 typedef enum		e_type
 {
@@ -28,7 +29,13 @@ typedef
 struct segment_command_64	t_sc64;
 
 typedef
-struct symtab_command	t_symtab;
+struct symtab_command	t_sytab;
+
+typedef
+struct section		t_s32;
+
+typedef
+struct section_64	t_s64;
 
 typedef
 struct fat_header	t_fh;
@@ -70,5 +77,11 @@ t_mapfile			*map_file_from_mem(
 
 t_mapfile			*map_release(t_mapfile *map);
 t_mapfile			*map_appropriate(t_mapfile *map);
+
+t_mapfile			*map_macho_file(t_mapfile *map);
+
+t_mapfile			*map_fat_file(t_mapfile *map);
+t_mapfile			*map_arch_file(t_mapfile *map);
+
 
 #endif
