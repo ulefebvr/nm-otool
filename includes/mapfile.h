@@ -47,6 +47,15 @@ struct fat_arch	t_fa32;
 typedef
 struct fat_arch_64	t_fa64;
 
+typedef
+struct ar_hdr	t_ar;
+
+typedef
+struct ranlib	t_rl32;
+
+typedef
+struct ranlib_64	t_rl64;
+
 typedef struct		s_mapfile
 {
 	char			*file_name;
@@ -69,6 +78,12 @@ typedef struct		s_mapfile
 	t_fh			fat_header;
 	t_fa32			*fat_ah_32;
 	t_fa64			*fat_ah_64;
+\
+	t_subtype		arch_subtype;
+	t_ar			arch_header;
+	uint32_t		arch_nranlib;
+	t_rl32			*arch_rl32;
+	t_rl64			*arch_rl64;
 }					t_mapfile;
 
 t_ofile				*mapfile(char *fname);
@@ -81,9 +96,7 @@ t_mapfile			*map_release(t_mapfile *map);
 t_mapfile			*map_appropriate(t_mapfile *map);
 
 t_mapfile			*map_macho_file(t_mapfile *map);
-
 t_mapfile			*map_fat_file(t_mapfile *map);
 t_mapfile			*map_arch_file(t_mapfile *map);
-
 
 #endif

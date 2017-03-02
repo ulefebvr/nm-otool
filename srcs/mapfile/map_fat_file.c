@@ -83,7 +83,7 @@ t_mapfile		*map_get_arch_header(t_mapfile *map)
 {
 	if (map->fat_subtype == B32)
 	{
-		if (map->file_size < sizeof(t_fh) + sizeof(t_fa32))
+		if (map->file_size < (sizeof(t_fh) + sizeof(uint32_t) + sizeof(t_fa32)))
 		{
 			ft_fdprint(2, "File %s is corrupted (no arch header)\n", map->file_name);
 			return (map_release(map));
@@ -92,7 +92,7 @@ t_mapfile		*map_get_arch_header(t_mapfile *map)
 	}
 	else
 	{
-		if (map->file_size < sizeof(t_fh) + sizeof(t_fa64))
+		if (map->file_size < (sizeof(t_fh) + sizeof(uint32_t) + sizeof(t_fa64)))
 		{
 			ft_fdprint(2, "File %s is corrupted (no arch header)\n", map->file_name);
 			return (map_release(map));
@@ -107,7 +107,7 @@ t_mapfile		*map_get_fat_header(t_mapfile *map)
 	map->fat_subtype = get_fat_subtype(map);
 	if (map->fat_subtype == B32 || map->fat_subtype == B64)
 	{
-		if (map->file_size < sizeof(t_fh))
+		if (map->file_size < sizeof(t_fh) + sizeof(uint32_t))
 		{
 			ft_fdprint(2, "File %s is corrupted (no fat header)\n", map->file_name);
 			return (map_release(map));
