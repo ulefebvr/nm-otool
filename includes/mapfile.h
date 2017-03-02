@@ -95,9 +95,7 @@ t_mapfile			*map_release(t_mapfile *map);
 t_mapfile			*map_appropriate(t_mapfile *map);
 
 t_mapfile			*map_macho_file(t_mapfile *map);
-
 t_mapfile			*map_fat_file(t_mapfile *map);
 t_mapfile			*map_arch_file(t_mapfile *map);
-
 
 #endif
