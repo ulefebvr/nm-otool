@@ -51,7 +51,7 @@ static void			nm(t_ofile *ofile, int options, int show)
 {
 	t_symtab		*stlist;
 
-	if ((stlist = nm_get_stlist(ofile, show)))
+	if ((stlist = nm_get_stlist(ofile, show, options)))
 	{
 		stlist = nm_stlist_sort(stlist, options);
 		nm_stlist_display(stlist, ofile, options);

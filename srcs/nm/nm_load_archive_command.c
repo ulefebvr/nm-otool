@@ -21,19 +21,20 @@
 #include "swap.h"
 #include "misc.h"
 
-static void				process_nm(t_ofile *ofile)
+static void				process_nm(t_ofile *ofile, int opt)
 {
 	t_symtab		*stlist;
 
-	if ((stlist = nm_get_stlist(ofile, 0)))
+	if ((stlist = nm_get_stlist(ofile, 0, opt | AR_T)))
 	{
-		stlist = nm_stlist_sort(stlist, AR_T);
-		nm_stlist_display(stlist, ofile, AR_T);
+		stlist = nm_stlist_sort(stlist, opt | AR_T);
+		nm_stlist_display(stlist, ofile, opt | AR_T);
 		nm_stlist_free(stlist);
 	}
 }
 
-static void				load_archive_command32(t_archive *ar, t_ofile *ofile)
+static void				load_archive_command32(
+							t_archive *ar, t_ofile *ofile, int opt)
 {
 	int					i;
 	struct ranlib		*ranlibs;
@@ -53,13 +54,14 @@ static void				load_archive_command32(t_archive *ar, t_ofile *ofile)
 	{
 		ft_print("\n%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
 		ofile_tmp.ptr = ar_tmp[i]->object;
-		process_nm(&ofile_tmp);
+		process_nm(&ofile_tmp, opt);
 		free(ar_tmp[i]);
 	}
 	free(ar_tmp);
 }
 
-static void				load_archive_command64(t_archive *ar, t_ofile *ofile)
+static void				load_archive_command64(
+							t_archive *ar, t_ofile *ofile, int opt)
 {
 	int					i;
 	struct ranlib_64	*ranlibs;
@@ -79,13 +81,13 @@ static void				load_archive_command64(t_archive *ar, t_ofile *ofile)
 	{
 		ft_print("\n%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
 		ofile_tmp.ptr = ar_tmp[i]->object;
-		process_nm(&ofile_tmp);
+		process_nm(&ofile_tmp, opt);
 		free(ar_tmp[i]);
 	}
 	free(ar_tmp);
 }
 
-t_symtab				*nm_load_archive_command(t_ofile *ofile)
+t_symtab				*nm_load_archive_command(t_ofile *ofile, int options)
 {
 	t_archive			*ar;
 	char				*name;
@@ -96,13 +98,13 @@ t_symtab				*nm_load_archive_command(t_ofile *ofile)
 	{
 		ar = get_ar_header(ofile->ptr, SARMAG, sizeof(uint32_t));
 		ar->nranlib = ar->size / sizeof(struct ranlib);
-		load_archive_command32(ar, ofile);
+		load_archive_command32(ar, ofile, options);
 	}
 	else if (!ft_strcmp(name, SYMDEF_64) || !ft_strcmp(name, SYMDEF_64_SORTED))
 	{
 		ar = get_ar_header(ofile->ptr, SARMAG, sizeof(uint64_t));
 		ar->nranlib = ar->size / sizeof(struct ranlib_64);
-		load_archive_command64(ar, ofile);
+		load_archive_command64(ar, ofile, options);
 	}
 	free(ar);
 	return (0);

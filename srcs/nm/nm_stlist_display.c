@@ -40,7 +40,8 @@ static int		ft_putunbr_base(uint64_t i, int base, int capitals)
 static void		ft_print_value(
 	t_symtab *stlist, int options, int type, int base)
 {
-	if (stlist->value != 0 || ((options & AR_T) && stlist->type == 'T'))
+	if (stlist->value != 0 || ((options & AR_T) && stlist->type == 'T')
+		|| (stlist->value == 0 && stlist->type == 'T'))
 	{
 		write(1, "0000000000000000",
 			type - ft_nbrlen_base(stlist->value, base));

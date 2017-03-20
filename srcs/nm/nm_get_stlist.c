@@ -20,11 +20,12 @@
 #include "swap.h"
 #include "libft.h"
 
-t_symtab			*nm_get_stlist(t_ofile *ofile, int show)
+t_symtab			*nm_get_stlist(t_ofile *ofile, int show, int options)
 {
 	uint32_t		magic;
 	t_symtab		*stlist;
 
+	stlist = NULL;
 	magic = *(uint32_t *)ofile->ptr;
 	misc_check_swap_need(magic, &(ofile->swap));
 	misc_check_filetype(swap_uint32_t(magic, ofile->swap), &(ofile->filetype));
@@ -40,11 +41,9 @@ t_symtab			*nm_get_stlist(t_ofile *ofile, int show)
 	}
 	else if (!ft_strncmp(ofile->ptr, ARMAG, SARMAG))
 	{
-		stlist = nm_load_archive_command(ofile);
+		stlist = nm_load_archive_command(ofile, options);
 	}
 	else
-	{
 		ft_fdprint(2, "%s\n", "Unrecognized file format");
-	}
 	return (stlist);
 }
