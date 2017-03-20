@@ -1,5 +1,17 @@
-#ifndef MAP_FILE_H
-# define MAP_FILE_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mapfile.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 18:08:16 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 18:08:17 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MAPFILE_H
+# define MAPFILE_H
 
 # include "misc.h"
 
@@ -17,44 +29,31 @@ typedef enum		e_subtype
 	B32, B64
 }					t_subtype;
 
-typedef
-struct mach_header	t_mh;
+typedef struct mach_header			t_mh;
 
-typedef
-struct load_command	t_lc;
+typedef struct load_command			t_lc;
 
-typedef
-struct segment_command	t_sc32;
+typedef struct segment_command		t_sc32;
 
-typedef
-struct segment_command_64	t_sc64;
+typedef struct segment_command_64	t_sc64;
 
-typedef
-struct symtab_command	t_sytab;
+typedef struct symtab_command		t_sytab;
 
-typedef
-struct section		t_s32;
+typedef struct section				t_s32;
 
-typedef
-struct section_64	t_s64;
+typedef struct section_64			t_s64;
 
-typedef
-struct fat_header	t_fh;
+typedef struct fat_header			t_fh;
 
-typedef
-struct fat_arch	t_fa32;
+typedef struct fat_arch				t_fa32;
 
-typedef
-struct fat_arch_64	t_fa64;
+typedef struct fat_arch_64			t_fa64;
 
-typedef
-struct ar_hdr	t_ar;
+typedef struct ar_hdr				t_ar;
 
-typedef
-struct ranlib	t_rl32;
+typedef struct ranlib				t_rl32;
 
-typedef
-struct ranlib_64	t_rl64;
+typedef struct ranlib_64			t_rl64;
 
 typedef struct		s_mapfile
 {

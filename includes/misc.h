@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   misc.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 18:10:51 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 18:10:52 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MISC_H
 # define MISC_H
 
-#include <stddef.h>
-#include <stdint.h>
+# include <stddef.h>
+# include <stdint.h>
 
-#include <ar.h>
+# include <ar.h>
 
-typedef
-struct load_command		t_lc;
+typedef struct load_command		t_lc;
 
 typedef struct			s_ofile
 {
@@ -31,7 +42,7 @@ typedef struct			s_archive
 	void				*ranlibs;
 }						t_archive;
 
-#define S_AR_HDR		(sizeof(struct ar_hdr))
+# define S_AR_HDR		(sizeof(struct ar_hdr))
 
 void					misc_check_swap_need(uint32_t magic, char *swap);
 
