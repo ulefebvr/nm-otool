@@ -47,11 +47,11 @@ static int			get_option(int *option, int ac, char **av)
 	return (0);
 }
 
-static void			nm(t_ofile *ofile, int options)
+static void			nm(t_ofile *ofile, int options, int show)
 {
 	t_symtab		*stlist;
 
-	if ((stlist = nm_get_stlist(ofile)))
+	if ((stlist = nm_get_stlist(ofile, show)))
 	{
 		stlist = nm_stlist_sort(stlist, options);
 		nm_stlist_display(stlist, ofile, options);
@@ -80,8 +80,7 @@ int					main(int ac, char **av)
 			status = EXIT_FAILURE;
 			break ;
 		}
-		ft_print("\n%s:\n", av[i]);
-		nm(ofile, options);
+		nm(ofile, options, ac > 1);
 		unmapfile(ofile);
 		++i;
 	}

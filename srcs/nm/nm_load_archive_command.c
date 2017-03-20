@@ -25,7 +25,7 @@ static void				process_nm(t_ofile *ofile)
 {
 	t_symtab		*stlist;
 
-	if ((stlist = nm_get_stlist(ofile)))
+	if ((stlist = nm_get_stlist(ofile, 0)))
 	{
 		stlist = nm_stlist_sort(stlist, AR_T);
 		nm_stlist_display(stlist, ofile, AR_T);
@@ -51,8 +51,7 @@ static void				load_archive_command32(t_archive *ar, t_ofile *ofile)
 	i = -1;
 	while ((uint32_t)(++i) < ar->nranlib)
 	{
-		ft_print((i > 0) ? "\n" : "");
-		ft_print("%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
+		ft_print("\n%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
 		ofile_tmp.ptr = ar_tmp[i]->object;
 		process_nm(&ofile_tmp);
 		free(ar_tmp[i]);
@@ -78,8 +77,7 @@ static void				load_archive_command64(t_archive *ar, t_ofile *ofile)
 	i = -1;
 	while ((uint32_t)(++i) < ar->nranlib)
 	{
-		ft_print((i > 0) ? "\n" : "");
-		ft_print("%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
+		ft_print("\n%s(%s):\n", ofile->filename, ar_tmp[i]->member_name);
 		ofile_tmp.ptr = ar_tmp[i]->object;
 		process_nm(&ofile_tmp);
 		free(ar_tmp[i]);
