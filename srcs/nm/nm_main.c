@@ -80,6 +80,7 @@ int					main(int ac, char **av)
 			status = EXIT_FAILURE;
 			break ;
 		}
+		ft_print("\n%s:\n", av[i]);
 		nm(ofile, options);
 		unmapfile(ofile);
 		++i;
