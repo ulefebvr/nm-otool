@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm_stlist_create.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 13:31:49 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 13:31:49 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/nlist.h>
 #include <mach-o/loader.h>
 
@@ -129,4 +141,3 @@ t_symtab			*add_new_stlist_64(
 	// node->pathname; TO FOUND WHERE IT IS STORED
 	return (node);
 }
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   otool_main.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:24:15 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:24:15 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <sys/mman.h>
 
 #include "libft.h"
@@ -30,6 +42,7 @@ int					main(int ac, char **av)
 	i = 0;
 	++av;
 	--ac;
+	status = EXIT_SUCCESS;
 	while (i < ac || (i == 0 && !av[i]))
 	{
 		if ((ofile = mapfile((i == 0 && !av[i]) ? "a.out" : av[i])) == 0)
@@ -37,7 +50,7 @@ int					main(int ac, char **av)
 			status = EXIT_FAILURE;
 			break ;
 		}
-		ft_print("%s:\n", ofile->filename);		
+		ft_print("%s:\n", ofile->filename);
 		otool(ofile);
 		unmapfile(ofile);
 		++i;

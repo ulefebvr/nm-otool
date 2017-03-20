@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm_stlist_display.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 13:31:57 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 13:31:57 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "nm.h"
 #include "libft.h"
 
@@ -30,7 +42,8 @@ static void		ft_print_value(
 {
 	if (stlist->value != 0 || ((options & AR_T) && stlist->type == 'T'))
 	{
-		write(1, "0000000000000000", type - ft_nbrlen_base(stlist->value, base));
+		write(1, "0000000000000000",
+			type - ft_nbrlen_base(stlist->value, base));
 		ft_putunbr_base(stlist->value, base, 0);
 	}
 	else

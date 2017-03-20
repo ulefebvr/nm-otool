@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm_load_macho_command.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 13:30:59 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 13:31:02 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/loader.h>
 
 #include "nm.h"
@@ -90,6 +102,7 @@ t_symtab				*nm_load_macho_command(uint32_t magic, t_ofile *ofile)
 	t_lc				*lc;
 
 	i = 0;
+	stlist = 0;
 	magic = swap_uint32_t(magic, ofile->swap);
 	ofile->lc = get_lc(magic, ofile->ptr);
 	lc = ofile->lc;
@@ -100,14 +113,10 @@ t_symtab				*nm_load_macho_command(uint32_t magic, t_ofile *ofile)
 		lc = (t_lc *)((char *)lc + swap_uint32_t(lc->cmdsize, ofile->swap));
 		++i;
 	}
-	if (i == ncmds)
-	{
-		stlist = 0;
-	}
-	else
+	if (i != ncmds)
 	{
 		if (swap_uint32_t(lc->cmd, ofile->swap) == LC_SYMTAB)
-		stlist = nm_load_macho_symtab(magic, (t_stc *)lc, ofile);
+			stlist = nm_load_macho_symtab(magic, (t_stc *)lc, ofile);
 	}
 	return (stlist);
 }

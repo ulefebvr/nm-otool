@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mapfile.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:19:38 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:19:42 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -30,6 +42,7 @@ t_ofile				*mapfile(char *fname)
 	int				fd;
 	t_ofile			*ofile;
 
+	fd = 0;
 	if ((ofile = (t_ofile *)ft_memalloc(sizeof(t_ofile))) == 0)
 		ft_fdprint(2, "Error on malloc struct s_ofile\n");
 	else if ((fd = open(fname, O_RDONLY)) == -1)
@@ -37,7 +50,7 @@ t_ofile				*mapfile(char *fname)
 	else if ((long long int)(ofile->filesize = get_file_size(fd)) < 0)
 		ft_fdprint(2, "Getting filesize of %s file failed\n", fname);
 	else if ((ofile->ptr = mmap(0, ofile->filesize, PROT_READ, MAP_PRIVATE, fd,\
-			 0)) == MAP_FAILED)
+			0)) == MAP_FAILED)
 		ft_fdprint(2, "The mapping of file %s has failed\n", fname);
 	else
 	{

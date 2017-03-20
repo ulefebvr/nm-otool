@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm_load_archive_command.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:22:04 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:22:04 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/loader.h>
 #include <mach-o/fat.h>
 #include <ar.h>
@@ -80,6 +92,7 @@ t_symtab				*nm_load_archive_command(t_ofile *ofile)
 	t_archive			*ar;
 	char				*name;
 
+	ar = NULL;
 	name = get_membername(ofile);
 	if (!ft_strcmp(name, SYMDEF) || !ft_strcmp(name, SYMDEF_SORTED))
 	{

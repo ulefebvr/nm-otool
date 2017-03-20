@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   otool_print.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:24:18 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:24:19 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/loader.h>
 
 #include "libft.h"
@@ -26,7 +38,7 @@ static int		ft_putunbr_base(int padding, uint64_t i, int base, int capitals)
 	return (1 + ret);
 }
 
-static void			print32(t_otool *otool, void *start, uint32_t size)
+static void		print32(t_otool *otool, void *start, uint32_t size)
 {
 	void			*ptr;
 	t_s32			*sect;
@@ -49,12 +61,11 @@ static void			print32(t_otool *otool, void *start, uint32_t size)
 	write(1, "\n", 1);
 }
 
-static void			print64(t_otool *otool, void *start, uint64_t size)
+static void		print64(t_otool *otool, void *start, uint64_t size)
 {
 	void			*ptr;
 	t_s64			*sect;
-(void)ptr;
-(void)size;
+
 	ptr = start;
 	sect = (t_s64 *)otool->section;
 	ft_print("Contents of (%s,%s) section", sect->segname, sect->sectname);
@@ -73,7 +84,7 @@ static void			print64(t_otool *otool, void *start, uint64_t size)
 	write(1, "\n", 1);
 }
 
-void				otool_print(t_otool *otool)
+void			otool_print(t_otool *otool)
 {
 	if (otool->type == 32)
 	{

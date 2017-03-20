@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   nm_get_stlist.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:21:58 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:21:59 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/loader.h>
 #include <ar.h>
 
@@ -28,7 +40,6 @@ t_symtab			*nm_get_stlist(t_ofile *ofile)
 	}
 	else if (!ft_strncmp(ofile->ptr, ARMAG, SARMAG))
 	{
-		ft_print("\033[32;1mARCHIVE\n\033[0m");
 		stlist = nm_load_archive_command(ofile);
 	}
 	else

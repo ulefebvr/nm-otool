@@ -5,11 +5,17 @@
 
 # include "misc.h"
 
-union			u_uint32_t
+typedef union	u_uint32_t
 {
 	char		bits[4];
 	uint32_t	nbr;
 }				t_uint32_t;
+
+typedef union	u_uint64_t
+{
+	char		bits[8];
+	uint64_t	nbr;
+}				t_uint64_t;
 
 void			nm_check_swap_need(uint32_t magic, char *swap);
 

@@ -95,8 +95,18 @@ t_mapfile			*map_file_from_mem(
 t_mapfile			*map_release(t_mapfile *map);
 t_mapfile			*map_appropriate(t_mapfile *map);
 
+t_mapfile			*map_check_segments(t_mapfile *map, t_lc *lc_segment);
+t_mapfile			*map_check_symtab(t_mapfile *map, t_lc *lc_symtab);
+t_mapfile			*map_add_section(
+					t_mapfile *map, void *section, uint32_t i, uint32_t nsects);
 t_mapfile			*map_macho_file(t_mapfile *map);
+
+t_mapfile			*map_check_arch_32(t_mapfile *map);
+t_mapfile			*map_check_arch_64(t_mapfile *map);
 t_mapfile			*map_fat_file(t_mapfile *map);
+
+t_mapfile			*map_arch_check_ranlib_32(t_mapfile *map);
+t_mapfile			*map_arch_check_ranlib_64(t_mapfile *map);
 t_mapfile			*map_arch_file(t_mapfile *map);
 
 #endif

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   otool_info_archive.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:23:59 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:23:59 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <ar.h>
 #include <mach-o/ranlib.h>
 #include <stdlib.h>
@@ -68,6 +80,7 @@ int					otool_info_ar(t_ofile *ofile)
 	t_archive	*ar;
 	char		*name;
 
+	ar = NULL;
 	name = get_membername(ofile);
 	if (!ft_strcmp(name, SYMDEF) || !ft_strcmp(name, SYMDEF_SORTED))
 	{

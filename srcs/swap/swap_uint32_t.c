@@ -1,14 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   swap_uint32_t.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:24:30 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:24:30 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "swap.h"
 
 #include "libft.h"
 
-uint32_t swap_uint32_t(uint32_t nbr, char swap)
+uint32_t	swap_uint32_t(uint32_t nbr, char swap)
 {
-	union			u_uint32_t
-	{
-		char		bits[4];
-		uint32_t	nbr;
-	} norm, inv;
+	t_uint32_t	norm;
+	t_uint32_t	inv;
 
 	if (swap)
 	{

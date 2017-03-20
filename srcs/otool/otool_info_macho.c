@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   otool_info_macho.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:24:07 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:24:08 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <mach-o/loader.h>
 
 #include "libft.h"
@@ -31,7 +43,6 @@ static int		info_macho32(void *ptr, t_otool *otool, t_ofile *ofile)
 	segment = (t_sc32 *)ptr;
 	if (segment->nsects == 0)
 	{
-
 		return (0);
 	}
 	section = (t_s32 *)((char *)segment + sizeof(t_sc32));

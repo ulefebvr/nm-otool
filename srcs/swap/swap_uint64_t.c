@@ -1,14 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   swap_uint64_t.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ulefebvr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/20 10:23:25 by ulefebvr          #+#    #+#             */
+/*   Updated: 2017/03/20 10:23:26 by ulefebvr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "swap.h"
 
 #include "libft.h"
 
-uint64_t swap_uint64_t(uint64_t nbr, char swap)
+uint64_t	swap_uint64_t(uint64_t nbr, char swap)
 {
-	union			u_uint64_t
-	{
-		char		bits[8];
-		uint64_t	nbr;
-	} norm, inv;
+	t_uint64_t	norm;
+	t_uint64_t	inv;
 
 	if (swap)
 	{
