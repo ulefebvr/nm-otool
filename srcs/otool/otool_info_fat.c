@@ -35,7 +35,8 @@ static int		info_fat32(
 			ofile->ptr = (char *)ptr + swap_uint32_t(archs[i].offset, swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			magic = swap_uint32_t(*(uint32_t *)ofile->ptr, ofile->swap);
-			i = otool_info_macho(magic, otool, ofile);
+			process_otool(ofile);
+			(void)otool;
 			ofile->swap = swap;
 			ofile->ptr = ptr;
 			return ((int)i);
@@ -63,7 +64,8 @@ static int		info_fat64(
 			ofile->ptr = (char *)ptr + swap_uint64_t(archs[i].offset, swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			magic = swap_uint32_t(*(uint32_t *)ofile->ptr, ofile->swap);
-			i = otool_info_macho(magic, otool, ofile);
+			process_otool(ofile);
+			(void)otool;
 			ofile->swap = swap;
 			ofile->ptr = ptr;
 			return ((int)i);
