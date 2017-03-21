@@ -13,7 +13,7 @@
 #include "mapfile.h"
 #include "libft.h"
 
-#include "mach-o/ranlib.h"
+#include <mach-o/ranlib.h>
 
 t_mapfile		*map_arch_check_ranlib_64(t_mapfile *map)
 {

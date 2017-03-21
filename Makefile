@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-TARGET_EXEC1 ?= nm
-TARGET_EXEC2 ?= otool
+TARGET_EXEC1 ?= ft_nm
+TARGET_EXEC2 ?= ft_otool
 
 BUILD_DIR ?= ./build
 SRC_DIRS1 ?= ./srcs/

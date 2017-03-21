@@ -41,7 +41,7 @@ static void		ft_print_value(
 	t_symtab *stlist, int options, int type, int base)
 {
 	if (stlist->value != 0 || ((options & AR_T) && stlist->type == 'T')
-		|| (stlist->value == 0 && stlist->type == 'T'))
+		|| (stlist->value == 0 && (stlist->type == 'T' || stlist->type == 't')))
 	{
 		write(1, "0000000000000000",
 			type - ft_nbrlen_base(stlist->value, base));
