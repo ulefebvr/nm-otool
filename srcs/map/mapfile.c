@@ -20,6 +20,8 @@
 #include "misc.h"
 #include "libft.h"
 
+#include "mapfile.h"
+
 static long long	get_file_size(int fd)
 {
 	struct stat		buf;
@@ -37,6 +39,21 @@ static void			release_data(t_ofile *ofile)
 	}
 }
 
+static int			check_further(char *fname, void *faddr, size_t fsize)
+{
+	int				ret;
+	t_mapfile		*mapfile;
+
+	ret = 0;
+	mapfile = map_file_from_mem(NULL, fname, faddr, fsize);
+	if (NULL != mapfile)
+	{
+		map_release(mapfile);
+		ret = 1;
+	}
+	return (ret);
+}
+
 t_ofile				*mapfile(char *fname)
 {
 	int				fd;
@@ -52,6 +69,8 @@ t_ofile				*mapfile(char *fname)
 	else if ((ofile->ptr = mmap(0, ofile->filesize, PROT_READ, MAP_PRIVATE, fd,\
 			0)) == MAP_FAILED)
 		ft_fdprint(2, "The mapping of file %s has failed\n", fname);
+	else if (!check_further(fname, ofile->ptr, ofile->filesize))
+		ft_fdprint(2, "Parse error on file %s\n", fname);
 	else
 	{
 		ofile->filename = fname;
