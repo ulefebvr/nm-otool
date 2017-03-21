@@ -19,8 +19,20 @@
 #include "swap.h"
 #include "misc.h"
 
+static void				process_nm(t_ofile *ofile, int opt)
+{
+	t_symtab		*stlist;
+
+	if ((stlist = nm_get_stlist(ofile, 0, opt | AR_T)))
+	{
+		stlist = nm_stlist_sort(stlist, opt | AR_T);
+		nm_stlist_display(stlist, ofile, opt | AR_T);
+		nm_stlist_free(stlist);
+	}
+}
+
 t_symtab				*nm_get_fat_list32(
-	t_arch32 *arch, uint32_t narchs, t_ofile *ofile)
+	t_arch32 *arch, uint32_t narchs, t_ofile *ofile, int opt)
 {
 	void				*ptr;
 	char				swap;
@@ -38,7 +50,7 @@ t_symtab				*nm_get_fat_list32(
 				+ swap_uint32_t(arch[narchs].offset, ofile->swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
-			stlist = nm_load_macho_command(*(uint32_t *)ofile->ptr, ofile);
+			process_nm(ofile, opt);
 			ofile->ptr = ptr;
 			ofile->swap = swap;
 			break ;
@@ -48,7 +60,7 @@ t_symtab				*nm_get_fat_list32(
 }
 
 t_symtab				*nm_get_fat_list64(
-	t_arch64 *arch, uint32_t narchs, t_ofile *ofile)
+	t_arch64 *arch, uint32_t narchs, t_ofile *ofile, int opt)
 {
 	void				*ptr;
 	char				swap;
@@ -66,7 +78,7 @@ t_symtab				*nm_get_fat_list64(
 				+ swap_uint64_t(arch[narchs].offset, ofile->swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
-			stlist = nm_load_macho_command(*(uint32_t *)ofile->ptr, ofile);
+			process_nm(ofile, opt);
 			ofile->ptr = ptr;
 			ofile->swap = swap;
 			break ;
@@ -75,7 +87,8 @@ t_symtab				*nm_get_fat_list64(
 	return (stlist);
 }
 
-t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile)
+t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile,
+							int opt)
 {
 	t_symtab			*stlist;
 
@@ -85,13 +98,13 @@ t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile)
 	{
 		stlist = nm_get_fat_list32(
 			(t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
-			((t_fh *)ofile->ptr)->nfat_arch, ofile);
+			((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);
 	}
 	else
 	{
 		stlist = nm_get_fat_list64(
 			(t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
-			((t_fh *)ofile->ptr)->nfat_arch, ofile);
+			((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);
 	}
 	return (stlist);
 }

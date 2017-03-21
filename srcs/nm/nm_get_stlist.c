@@ -37,7 +37,7 @@ t_symtab			*nm_get_stlist(t_ofile *ofile, int show, int options)
 	}
 	else if (misc_is_fat(magic))
 	{
-		stlist = nm_load_fat_command(magic, ofile);
+		stlist = nm_load_fat_command(magic, ofile, options);
 	}
 	else if (!ft_strncmp(ofile->ptr, ARMAG, SARMAG))
 	{

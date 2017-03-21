@@ -54,7 +54,8 @@ typedef struct			s_symtab
 }						t_symtab;
 
 t_symtab				*nm_load_macho_command(uint32_t magic, t_ofile *ofile);
-t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile);
+t_symtab				*nm_load_fat_command(
+							uint32_t magic, t_ofile *ofile, int opt);
 t_symtab				*nm_load_archive_command(t_ofile *ofile, int opt);
 t_symtab				*nm_get_stlist(t_ofile *ofile, int ac, int opt);
 t_symtab				*add_new_stlist(t_symtab *tail, char *stringtable,
