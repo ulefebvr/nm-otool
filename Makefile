@@ -36,23 +36,23 @@ CFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -Werror -Wextra
 # Libraries (-lfoo) should be added to the LDLIBS variable instead.
 LDFLAGS ?= -L lib/libft -lft -L lib/option -loption
 
-DEPENDENCE_RELINK = ./lib ./lib/libft.a ./lib/liboption.a
+DEPENDENCE_RELINK = ./lib/libft.a ./lib/liboption.a
 
-all: $(TARGET_EXEC1) $(TARGET_EXEC2) $(OBJS) $(DEPENDENCE_RELINK)
+all: $(TARGET_EXEC1) $(TARGET_EXEC2) $(OBJS)
 
 # $(TARGET_EXEC): $(OBJS)
 # 	ar rc $(TARGET_EXEC) $(OBJS)
 # 	ranlib $(TARGET_EXEC)
 
-$(TARGET_EXEC2): $(OBJS2) $(DEPENDENCE_RELINK)
-	$(CC) -o $@ $(OBJS2) $(LDFLAGS)
-
-$(TARGET_EXEC1): $(OBJS1) $(DEPENDENCE_RELINK)
-	$(CC) -o $@ $(OBJS1) $(LDFLAGS)
-
-$(DEPENDENCE_RELINK):
+$(TARGET_EXEC2): $(OBJS2)
 	make -C lib/libft
 	make -C lib/option
+	$(CC) -o $@ $(OBJS2) $(LDFLAGS)
+
+$(TARGET_EXEC1): $(OBJS1)
+	make -C lib/libft
+	make -C lib/option
+	$(CC) -o $@ $(OBJS1) $(LDFLAGS)
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
