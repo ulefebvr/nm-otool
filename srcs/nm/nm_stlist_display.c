@@ -59,8 +59,8 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 	{
 		if (!ft_strlen(stlist->name)
 			|| stlist->type == 'u'
-			|| ((options & OPT_G) && ((stlist->n_type & N_STAB) == N_GSYM)
-				&& (stlist->n_type & N_EXT))
+			|| ((options & OPT_G) 
+				&& !((unsigned)(stlist->type - 'A') <= ('Z' - 'A')))
 			|| stlist->type == 0
 			|| (options & OPT_LU && !IS_UNDEF(stlist->type))
 			|| (options & OPT_BU && IS_UNDEF(stlist->type))
@@ -69,7 +69,7 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 			stlist = stlist->next;
 			continue ;
 		}
-		if (!(options & OPT_J))
+		if (!(options & OPT_J) && !(options & OPT_LU))
 		{
 			ft_print_value(stlist, options, ofile->filetype,
 				(options & OPT_X) ? 10 : 16);
