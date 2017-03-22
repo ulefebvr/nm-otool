@@ -23,9 +23,9 @@ static int		info_fat32(
 	uint32_t	i;
 	void		*ptr;
 	char		swap;
-	uint32_t	magic;
 
 	i = 0;
+	(void)otool;
 	while (i < narchs)
 	{
 		if (swap_uint32_t(archs[i].cputype, ofile->swap) == CPU_TYPE_X86_64)
@@ -34,12 +34,10 @@ static int		info_fat32(
 			swap = ofile->swap;
 			ofile->ptr = (char *)ptr + swap_uint32_t(archs[i].offset, swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
-			magic = swap_uint32_t(*(uint32_t *)ofile->ptr, ofile->swap);
 			process_otool(ofile);
-			(void)otool;
 			ofile->swap = swap;
 			ofile->ptr = ptr;
-			return ((int)i);
+			return (1);
 		}
 		i++;
 	}
@@ -52,9 +50,9 @@ static int		info_fat64(
 	uint32_t	i;
 	void		*ptr;
 	char		swap;
-	uint32_t	magic;
 
 	i = 0;
+	(void)otool;
 	while (i < narchs)
 	{
 		if (swap_uint32_t(archs[i].cputype, ofile->swap) == CPU_TYPE_X86_64)
@@ -63,12 +61,10 @@ static int		info_fat64(
 			swap = ofile->swap;
 			ofile->ptr = (char *)ptr + swap_uint64_t(archs[i].offset, swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
-			magic = swap_uint32_t(*(uint32_t *)ofile->ptr, ofile->swap);
 			process_otool(ofile);
-			(void)otool;
 			ofile->swap = swap;
 			ofile->ptr = ptr;
-			return ((int)i);
+			return (1);
 		}
 		i++;
 	}
@@ -79,17 +75,17 @@ int				otool_info_fat(uint32_t magic, t_otool *otool, t_ofile *ofile)
 {
 	if (magic == FAT_MAGIC)
 	{
-		return (info_fat32(
+		info_fat32(
 			(t_arch32 *)(ofile->ptr + sizeof(t_fh)),
 			swap_uint32_t(((t_fh *)ofile->ptr)->nfat_arch, ofile->swap),
-			otool, ofile));
+			otool, ofile);
 	}
 	else
 	{
-		return (info_fat64(
+		info_fat64(
 			(t_arch64 *)(ofile->ptr + sizeof(t_fh)),
 			((t_fh *)ofile->ptr)->nfat_arch,
-			otool, ofile));
+			otool, ofile);
 	}
 	return (0);
 }
