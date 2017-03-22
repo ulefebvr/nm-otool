@@ -69,6 +69,7 @@ t_symtab		*nm_stlist_sort(t_symtab *stlist, int options)
 	else if (options & OPT_P)
 	{
 		stlist = nm_sort(stlist, nm_sort_symtab);
+		stlist = nm_sort(stlist, nm_sort_type);
 	}
 	if (options & OPT_R)
 	{

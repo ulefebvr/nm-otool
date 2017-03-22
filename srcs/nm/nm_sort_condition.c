@@ -27,3 +27,13 @@ int				nm_sort_symtab(t_symtab *a, t_symtab *b)
 {
 	return (a->n_strx > b->n_strx);
 }
+
+int				nm_sort_type(t_symtab *a, t_symtab *b)
+{
+	int a_upper;
+	int b_upper;
+
+	a_upper = (unsigned)(a->type - 'Z') <= (unsigned)('A' - 'Z');
+	b_upper = (unsigned)(b->type - 'Z') <= (unsigned)('A' - 'Z');
+	return (a_upper != b_upper && a_upper == 0);
+}

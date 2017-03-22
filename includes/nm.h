@@ -18,8 +18,8 @@
 
 # include "misc.h"
 
-# define ERR_USAGE		"nm  [ -agnoprumxj ]"
-# define NM_OPTIONS		"npraguUxj"
+# define ERR_USAGE		"./ft_nm  [ -agnpruUxj ]"
+# define NM_OPTIONS		"npraguUxjh"
 
 # define IS_UNDEF(x)	(x == 'U' || x == 'u')
 
@@ -67,6 +67,7 @@ t_symtab				*nm_stlist_sort(t_symtab *stlist, int options);
 int						nm_sort_alphabetic(t_symtab *a, t_symtab *b);
 int						nm_sort_numerically(t_symtab *a, t_symtab *b);
 int						nm_sort_symtab(t_symtab *a, t_symtab *b);
+int						nm_sort_type(t_symtab *a, t_symtab *b);
 
 void					nm_stlist_display(t_symtab *stlist, t_ofile *ofile,
 							int option);
