@@ -20,6 +20,22 @@ static void			ft_usage(void)
 	ft_fdprint(2, "%s\n", ERR_USAGE);
 }
 
+static void			ft_help(void)
+{
+	ft_usage();
+	ft_fdprint(2, "    -h    Display this help text.\n");
+	ft_fdprint(2, "    -a    Display all even those included by debugger.\n");
+	ft_fdprint(2, "    -g    Display only global (external) symbols.\n");
+	ft_fdprint(2, "    -n    Sort numerically rather than alphabetically.\n");
+	ft_fdprint(2, "    -p    Don't sort; display in symbol-table order.\n");
+	ft_fdprint(2, "    -r    Sort in reverse order.\n");
+	ft_fdprint(2, "    -u    Display only undefined symbols.\n");
+	ft_fdprint(2, "    -U    Don't display undefined symbols.\n");
+	ft_fdprint(2, "    -j    Just display the symbol names (no value or type)."
+		"\n");
+	ft_fdprint(2, "    -x    The value shall be written in hexadecimal.\n");
+}
+
 static int			get_option(int *option, int ac, char **av)
 {
 	int				c;
@@ -36,7 +52,7 @@ static int			get_option(int *option, int ac, char **av)
 		}
 		else if ((char)c == 'h')
 		{
-			ft_usage();
+			ft_help();
 			return (-1);
 		}
 		else
