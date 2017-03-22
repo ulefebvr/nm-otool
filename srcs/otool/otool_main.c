@@ -17,20 +17,20 @@
 #include "mapfile.h"
 #include "otool.h"
 
-static void			otool(t_ofile *ofile)
+static void			otool(t_ofile *ofile, int show)
 {
 	t_otool			otool;
 
 	ft_bzero(&otool, sizeof(t_otool));
-	if (otool_gather_information(&otool, ofile))
+	if (otool_gather_information(&otool, ofile, show))
 	{
 		otool_print(&otool);
 	}
 }
 
-void				process_otool(t_ofile *ofile)
+void				process_otool(t_ofile *ofile, int show)
 {
-	otool(ofile);
+	otool(ofile, show);
 }
 
 int					main(int ac, char **av)
@@ -50,8 +50,7 @@ int					main(int ac, char **av)
 			status = EXIT_FAILURE;
 			break ;
 		}
-		ft_print("%s:\n", ofile->filename);
-		otool(ofile);
+		otool(ofile, 1);
 		unmapfile(ofile);
 		++i;
 	}

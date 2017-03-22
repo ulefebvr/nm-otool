@@ -35,8 +35,9 @@ typedef struct		s_otool
 	int				type;
 }					t_otool;
 
-void				process_otool(t_ofile *of);
-int					otool_gather_information(t_otool *ot, t_ofile *of);
+void				process_otool(t_ofile *of, int show);
+int					otool_gather_information(t_otool *ot, t_ofile *of,
+						int show);
 int					otool_info_macho(uint32_t magic, t_otool *ot, t_ofile *of);
 int					otool_info_fat(uint32_t magic, t_otool *ot, t_ofile *of);
 int					otool_info_ar(t_ofile *of);

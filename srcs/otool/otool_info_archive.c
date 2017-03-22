@@ -37,10 +37,9 @@ static int			info_ar32(t_archive *ar, t_ofile *ofile)
 	sort(ar_tab, &ar->nranlib);
 	while ((uint32_t)(++i) < ar->nranlib)
 	{
-		write(1, "\n", (i > 0));
 		ft_print("%s(%s):\n", ofile->filename, ar_tab[i]->member_name);
 		ofile_tmp.ptr = ar_tab[i]->object;
-		process_otool(&ofile_tmp);
+		process_otool(&ofile_tmp, 0);
 		free(ar_tab[i]);
 	}
 	free(ar_tab);
@@ -65,10 +64,9 @@ static int			info_ar64(t_archive *ar, t_ofile *ofile)
 	sort(ar_tab, &ar->nranlib);
 	while ((uint32_t)(++i) < ar->nranlib)
 	{
-		write(1, "\n", (i > 0));
 		ft_print("%s(%s):\n", ofile->filename, ar_tab[i]->member_name);
 		ofile_tmp.ptr = ar_tab[i]->object;
-		process_otool(&ofile_tmp);
+		process_otool(&ofile_tmp, 0);
 		free(ar_tab[i]);
 	}
 	free(ar_tab);
