@@ -42,6 +42,8 @@ static void				load_archive_command32(
 	t_archive			**ar_tmp;
 
 	i = -1;
+	if (ar == NULL || ar->nranlib == 0)
+		return ;
 	ft_bzero(&ofile_tmp, sizeof(t_ofile));
 	ranlibs = (struct ranlib *)ar->ranlibs;
 	ar_tmp = ft_memalloc(sizeof(t_archive *) * ar->nranlib);
@@ -69,6 +71,8 @@ static void				load_archive_command64(
 	t_archive			**ar_tmp;
 
 	i = -1;
+	if (ar == NULL || ar->nranlib == 0)
+		return ;
 	ft_bzero(&ofile_tmp, sizeof(t_ofile));
 	ranlibs = (struct ranlib_64 *)ar->ranlibs;
 	ar_tmp = ft_memalloc(sizeof(t_archive *) * ar->nranlib);
