@@ -59,7 +59,7 @@ void			nm_stlist_display(t_symtab *stlist, t_ofile *ofile, int options)
 	{
 		if (!ft_strlen(stlist->name)
 			|| stlist->type == 'u'
-			|| ((options & OPT_G) 
+			|| ((options & OPT_G)
 				&& !((unsigned)(stlist->type - 'A') <= ('Z' - 'A')))
 			|| stlist->type == 0
 			|| (options & OPT_LU && !IS_UNDEF(stlist->type))

@@ -36,18 +36,18 @@ t_symtab				*nm_get_fat_list32(
 {
 	void				*ptr;
 	char				swap;
-	t_symtab			*stlist;
+	uint32_t			i;
 
-	stlist = 0;
+	i = 0;
 	narchs = swap_uint32_t(narchs, ofile->swap);
-	while (narchs--)
+	while (i < narchs)
 	{
-		if (swap_uint32_t(arch[narchs].cputype, ofile->swap) == HOST_CPU)
+		if (swap_uint32_t(arch[i].cputype, ofile->swap) == HOST_CPU)
 		{
 			ptr = ofile->ptr;
 			swap = ofile->swap;
 			ofile->ptr = (char *)ofile->ptr
-				+ swap_uint32_t(arch[narchs].offset, ofile->swap);
+				+ swap_uint32_t(arch[i].offset, ofile->swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
 			process_nm(ofile, opt);
@@ -55,8 +55,9 @@ t_symtab				*nm_get_fat_list32(
 			ofile->swap = swap;
 			break ;
 		}
+		i++;
 	}
-	return (stlist);
+	return (NULL);
 }
 
 t_symtab				*nm_get_fat_list64(
@@ -64,18 +65,18 @@ t_symtab				*nm_get_fat_list64(
 {
 	void				*ptr;
 	char				swap;
-	t_symtab			*stlist;
+	uint32_t			i;
 
-	stlist = 0;
+	i = 0;
 	narchs = swap_uint32_t(narchs, ofile->swap);
-	while (narchs--)
+	while (i < narchs)
 	{
-		if (swap_uint32_t(arch[narchs].cputype, ofile->swap) == HOST_CPU)
+		if (swap_uint32_t(arch[i].cputype, ofile->swap) == HOST_CPU)
 		{
 			ptr = ofile->ptr;
 			swap = ofile->swap;
 			ofile->ptr = (char *)ofile->ptr
-				+ swap_uint64_t(arch[narchs].offset, ofile->swap);
+				+ swap_uint64_t(arch[i].offset, ofile->swap);
 			misc_check_swap_need(*(uint32_t *)ofile->ptr, &ofile->swap);
 			ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
 			process_nm(ofile, opt);
@@ -83,8 +84,9 @@ t_symtab				*nm_get_fat_list64(
 			ofile->swap = swap;
 			break ;
 		}
+		i++;
 	}
-	return (stlist);
+	return (NULL);
 }
 
 t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile,
@@ -96,7 +98,7 @@ t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile,
 		if (no_host_cputype32((t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
 			((t_fh *)ofile->ptr)->nfat_arch, ofile))
 			show_all_cputype32((t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
-				((t_fh *)ofile->ptr)->nfat_arch, ofile), opt);
+				((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);
 		else
 			nm_get_fat_list32((t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
 				((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);
@@ -106,7 +108,7 @@ t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile,
 		if (no_host_cputype64((t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
 			((t_fh *)ofile->ptr)->nfat_arch, ofile))
 			show_all_cputype64((t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
-				((t_fh *)ofile->ptr)->nfat_arch, ofile), opt);
+				((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);
 		else
 			nm_get_fat_list64((t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
 				((t_fh *)ofile->ptr)->nfat_arch, ofile, opt);

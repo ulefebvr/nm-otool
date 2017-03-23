@@ -31,7 +31,8 @@ t_symtab			*nm_get_stlist(t_ofile *ofile, int show, int options)
 	misc_check_filetype(swap_uint32_t(magic, ofile->swap), &(ofile->filetype));
 	if (misc_is_macho_file(magic))
 	{
-		ofile->ncmds = ((struct mach_header *)ofile->ptr)->ncmds;
+		ofile->ncmds = swap_uint32_t(
+			((struct mach_header *)ofile->ptr)->ncmds, ofile->swap);
 		ft_print(show ? "\n%s:\n" : "", ofile->filename);
 		stlist = nm_load_macho_command(magic, ofile);
 	}

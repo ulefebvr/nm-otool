@@ -17,7 +17,7 @@
 #include "swap.h"
 #include "libft.h"
 
-static char			*section_64(t_ofile *ofile, uint8_t n_sect)
+static char			*section_64(t_ofile *ofile, uint8_t n_sect, char swap)
 {
 	uint32_t			i;
 	uint32_t			ncmds;
@@ -30,23 +30,23 @@ static char			*section_64(t_ofile *ofile, uint8_t n_sect)
 	n_sect -= 1;
 	while (ncmds < ofile->ncmds)
 	{
-		if (tmp_lc->cmd == LC_SEGMENT_64)
+		if (swap_uint32_t(tmp_lc->cmd, swap) == LC_SEGMENT_64)
 		{
-			tmp_sect = (struct section_64 *)((char *)tmp_lc
-				+ sizeof(struct segment_command_64));
-			if (n_sect < i + ((struct segment_command_64 *)tmp_lc)->nsects)
+			tmp_sect = (struct section_64 *)((char *)tmp_lc + sizeof(t_sc64));
+			if (n_sect < i + swap_uint32_t(((t_sc64 *)tmp_lc)->nsects, swap))
 			{
 				return (tmp_sect[n_sect - i].sectname);
 			}
-			i += ((struct segment_command_64 *)tmp_lc)->nsects;
+			i += swap_uint32_t(((t_sc64 *)tmp_lc)->nsects, swap);
 		}
-		tmp_lc = (t_lc *)((char *)tmp_lc + tmp_lc->cmdsize);
+		tmp_lc = (t_lc *)((char *)tmp_lc
+			+ swap_uint32_t(tmp_lc->cmdsize, swap));
 		++ncmds;
 	}
 	return (0);
 }
 
-static char			*section_32(t_ofile *ofile, uint8_t n_sect)
+static char			*section_32(t_ofile *ofile, uint8_t n_sect, char swap)
 {
 	uint32_t			i;
 	uint32_t			ncmds;
@@ -59,17 +59,17 @@ static char			*section_32(t_ofile *ofile, uint8_t n_sect)
 	n_sect -= 1;
 	while (ncmds < ofile->ncmds)
 	{
-		if (tmp_lc->cmd == LC_SEGMENT)
+		if (swap_uint32_t(tmp_lc->cmd, swap) == LC_SEGMENT)
 		{
-			tmp_sect = (struct section *)((char *)tmp_lc
-				+ sizeof(struct segment_command));
-			if (n_sect < i + ((struct segment_command *)tmp_lc)->nsects)
+			tmp_sect = (struct section *)((char *)tmp_lc + sizeof(t_sc32));
+			if (n_sect < i + swap_uint32_t(((t_sc32 *)tmp_lc)->nsects, swap))
 			{
 				return (tmp_sect[n_sect - i].sectname);
 			}
-			i += ((struct segment_command *)tmp_lc)->nsects;
+			i += swap_uint32_t(((t_sc32 *)tmp_lc)->nsects, swap);
 		}
-		tmp_lc = (t_lc *)((char *)tmp_lc + tmp_lc->cmdsize);
+		tmp_lc = (t_lc *)((char *)tmp_lc
+			+ swap_uint32_t(tmp_lc->cmdsize, swap));
 		++ncmds;
 	}
 	return (0);
@@ -93,13 +93,12 @@ static char			get_type_letter(
 	if (!type && (n_type & N_TYPE) == N_SECT)
 	{
 		section_name = (ofile->filetype == 8) ?
-			section_32(ofile, n_sect) : section_64(ofile, n_sect);
-		if (section_name && !ft_strcmp(section_name, SECT_TEXT))
-			type = 'T';
-		else if (section_name && !ft_strcmp(section_name, SECT_DATA))
-			type = 'D';
-		else if (section_name && !ft_strcmp(section_name, SECT_BSS))
-			type = 'B';
+			section_32(ofile, n_sect, ofile->swap)
+			: section_64(ofile, n_sect, ofile->swap);
+		if (section_name && (!ft_strcmp(section_name, SECT_TEXT)
+			|| !ft_strcmp(section_name, SECT_DATA)
+			|| !ft_strcmp(section_name, SECT_BSS)))
+			type = ft_toupper(section_name[2]);
 		else
 			type = 'S';
 	}
@@ -120,7 +119,6 @@ t_symtab			*add_new_stlist(
 		(uint64_t)swap_uint32_t(info.n_value, ofile->swap), info.n_sect);
 	node->name = stringtable + swap_uint32_t(info.n_un.n_strx, ofile->swap);
 	node->n_sect = info.n_sect;
-	// node->pathname; TO FOUND WHERE IT IS STORED
 	return (node);
 }
 
@@ -138,6 +136,5 @@ t_symtab			*add_new_stlist_64(
 		swap_uint64_t(info.n_value, ofile->swap), info.n_sect);
 	node->name = stringtable + swap_uint32_t(info.n_un.n_strx, ofile->swap);
 	node->n_sect = info.n_sect;
-	// node->pathname; TO FOUND WHERE IT IS STORED
 	return (node);
 }
