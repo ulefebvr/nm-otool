@@ -42,6 +42,16 @@ int					otool_info_macho(uint32_t magic, t_otool *ot, t_ofile *of);
 int					otool_info_fat(uint32_t magic, t_otool *ot, t_ofile *of);
 int					otool_info_ar(t_ofile *of);
 
-void				otool_print(t_otool *ot);
+void				otool_print(t_otool *ot, t_ofile *of);
+
+int					no_host_cputype32(t_arch32 *arch, uint32_t narchs,
+						t_ofile *ofile);
+int					no_host_cputype64(t_arch64 *arch, uint32_t narchs,
+						t_ofile *ofile);
+
+void				show_all_cputype32(
+						t_arch32 *arch, uint32_t narchs, t_ofile *ofile);
+void				show_all_cputype64(
+						t_arch64 *arch, uint32_t narchs, t_ofile *ofile);
 
 #endif

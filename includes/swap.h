@@ -35,4 +35,7 @@ int				swap_int(int nbr, char swap);
 uint32_t		swap_uint32_t(uint32_t nbr, char swap);
 uint64_t		swap_uint64_t(uint64_t nbr, char swap);
 
+# define SWAP32(x)		(swap_uint32_t(x, ofile->swap))
+# define SWAP64(x)		(swap_uint64_t(x, ofile->swap))
+
 #endif

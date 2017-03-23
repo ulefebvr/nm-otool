@@ -34,12 +34,14 @@
 # define OPT_J			0x100
 # define AR_T			0x200
 
-typedef struct mach_header		t_mh;
-typedef struct load_command		t_lc;
-typedef struct symtab_command	t_stc;
-typedef struct fat_header		t_fh;
-typedef struct fat_arch			t_arch32;
-typedef struct fat_arch_64		t_arch64;
+typedef struct mach_header			t_mh;
+typedef struct load_command			t_lc;
+typedef struct symtab_command		t_stc;
+typedef struct fat_header			t_fh;
+typedef struct fat_arch				t_arch32;
+typedef struct fat_arch_64			t_arch64;
+typedef struct segment_command		t_sc32;
+typedef struct segment_command_64	t_sc64;
 
 typedef struct			s_symtab
 {
@@ -54,9 +56,20 @@ typedef struct			s_symtab
 }						t_symtab;
 
 t_symtab				*nm_load_macho_command(uint32_t magic, t_ofile *ofile);
-t_symtab				*nm_load_fat_command(
-							uint32_t magic, t_ofile *ofile, int opt);
+
+void					show_all_cputype32(t_arch32 *arch, uint32_t narchs,
+							t_ofile *ofile, int opt);
+void					show_all_cputype64(t_arch64 *arch, uint32_t narchs,
+							t_ofile *ofile, int opt);
+int						no_host_cputype32(t_arch32 *arch, uint32_t narchs,
+							t_ofile *ofile);
+int						no_host_cputype64(t_arch64 *arch, uint32_t narchs,
+							t_ofile *ofile);
+t_symtab				*nm_load_fat_command(uint32_t magic, t_ofile *ofile,
+							int opt);
+
 t_symtab				*nm_load_archive_command(t_ofile *ofile, int opt);
+
 t_symtab				*nm_get_stlist(t_ofile *ofile, int ac, int opt);
 t_symtab				*add_new_stlist(t_symtab *tail, char *stringtable,
 							struct nlist info, t_ofile *ofile);

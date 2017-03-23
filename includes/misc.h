@@ -17,6 +17,7 @@
 # include <stdint.h>
 
 # include <ar.h>
+# include <mach/machine.h>
 
 typedef struct load_command		t_lc;
 
@@ -57,5 +58,10 @@ void					misc_check_filetype(uint32_t magic, int *filetype);
 t_archive				*get_ar_header(void *ptr, uint32_t offset, size_t size);
 void					sort(t_archive **ar, uint32_t *size);
 char					*get_membername(t_ofile *ofile);
+
+void					print_cputype_nm(t_ofile *ofile, cpu_type_t cputype);
+void					print_cputype_otool(t_ofile *ofile, cpu_type_t cputype);
+void					print_cputype(t_ofile *ofile, cpu_type_t cputype,
+							char *s);
 
 #endif
