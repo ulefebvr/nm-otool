@@ -94,7 +94,7 @@ t_mapfile		*map_macho_checklc(t_mapfile *map)
 		if (map->file_size <
 			(size_t)(((char *)lc - (char *)map->file_addr) + lc->cmdsize))
 		{
-			ft_fdprint(2, "File %s is corrupted : Load commands errors.",
+			ft_fdprint(2, "File %s is corrupted : Load commands errors.\n",
 				map->file_name);
 			return (map_release(map));
 		}
