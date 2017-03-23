@@ -44,6 +44,8 @@ typedef struct			s_archive
 
 # define S_AR_HDR		(sizeof(struct ar_hdr))
 
+# define HOST_CPU		CPU_TYPE_X86_64
+
 void					misc_check_swap_need(uint32_t magic, char *swap);
 
 int						misc_valid_magic(uint32_t magic);
