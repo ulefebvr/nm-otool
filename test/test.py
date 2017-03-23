@@ -33,9 +33,9 @@ def compare_otool_on_file(file):
     official = output_otool(file)
     mine = output_ftotool(file)
     if (mine == official):
-        print ("OK")
+        print ("\033[32;1mOK\033[0m")
     else:
-        print ("ERROR");
+        print ("\033[31;1mERROR\033[0m")
         create_debug_file(debug_dir + "/" + file.replace('/', '_') + "_otool_off", official)
         create_debug_file(debug_dir + "/" + file.replace('/', '_') + "_otool_mine", mine)
 
@@ -55,9 +55,9 @@ def compare_nm_on_file(file):
     official = output_nm(file)
     mine = output_ftnm(file)
     if (mine == official):
-        print ("OK")
+        print ("\033[32;1mOK\033[0m")
     else:
-        print ("ERROR");
+        print ("\033[31;1mERROR\033[0m")
         create_debug_file(debug_dir + "/" + file.replace('/', '_') + "_nm_off", official)
         create_debug_file(debug_dir + "/" + file.replace('/', '_') + "_nm_mine", mine)
 
