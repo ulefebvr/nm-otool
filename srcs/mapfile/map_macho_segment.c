@@ -33,7 +33,7 @@ t_mapfile		*map_check_segment32(t_mapfile *map, t_sc32 *segment)
 	while (i < nsects)
 	{
 		map_add_section(map, sections, i, nsects);
-		if (map->file_size
+		if (!(sections[i].flags & S_ZEROFILL) && map->file_size
 			< swap_uint32_t(sections[i].offset, map->macho_swap)
 			+ swap_uint32_t(sections[i].size, map->macho_swap))
 			return (map_release(map));
@@ -60,7 +60,7 @@ t_mapfile		*map_check_segment64(t_mapfile *map, t_sc64 *segment)
 	while (i < nsects)
 	{
 		map_add_section(map, sections, i, nsects);
-		if (map->file_size
+		if (!(sections[i].flags & S_ZEROFILL) && map->file_size
 			< swap_uint32_t(sections[i].offset, map->macho_swap)
 			+ swap_uint32_t(sections[i].size, map->macho_swap))
 			return (map_release(map));
