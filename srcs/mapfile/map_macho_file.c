@@ -92,7 +92,8 @@ t_mapfile		*map_macho_checklc(t_mapfile *map)
 	while (i < map->macho_header.ncmds)
 	{
 		if (map->file_size <
-			(size_t)(((char *)lc - (char *)map->file_addr) + lc->cmdsize))
+			(size_t)(((char *)lc - (char *)map->file_addr)
+			+ swap_uint32_t(lc->cmdsize, map->macho_swap)))
 		{
 			ft_fdprint(2, "File %s is corrupted : Load commands errors.\n",
 				map->file_name);
@@ -104,7 +105,7 @@ t_mapfile		*map_macho_checklc(t_mapfile *map)
 		if (lc->cmd == LC_SYMTAB
 			&& NULL == map_check_symtab(map, lc))
 			return (NULL);
-		lc = (t_lc *)((char *)lc + lc->cmdsize);
+		lc = (t_lc *)((char *)lc + swap_uint32_t(lc->cmdsize, map->macho_swap));
 		i++;
 	}
 	return (map);
