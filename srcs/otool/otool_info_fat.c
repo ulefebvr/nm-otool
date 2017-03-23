@@ -75,15 +75,21 @@ int				otool_info_fat(uint32_t magic, t_otool *otool, t_ofile *ofile)
 {
 	if (magic == FAT_MAGIC)
 	{
-		info_fat32(
-			(t_arch32 *)(ofile->ptr + sizeof(t_fh)),
+		if (no_host_cputype32((t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
+			((t_fh *)ofile->ptr)->nfat_arch, ofile))
+			show_all_cputype32((t_arch32 *)((char *)ofile->ptr + sizeof(t_fh)),
+				((t_fh *)ofile->ptr)->nfat_arch, ofile);
+		info_fat32((t_arch32 *)(ofile->ptr + sizeof(t_fh)),
 			swap_uint32_t(((t_fh *)ofile->ptr)->nfat_arch, ofile->swap),
 			otool, ofile);
 	}
 	else
 	{
-		info_fat64(
-			(t_arch64 *)(ofile->ptr + sizeof(t_fh)),
+		if (no_host_cputype64((t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
+			((t_fh *)ofile->ptr)->nfat_arch, ofile))
+			show_all_cputype64((t_arch64 *)((char *)ofile->ptr + sizeof(t_fh)),
+				((t_fh *)ofile->ptr)->nfat_arch, ofile);
+		info_fat64((t_arch64 *)(ofile->ptr + sizeof(t_fh)),
 			((t_fh *)ofile->ptr)->nfat_arch,
 			otool, ofile);
 	}

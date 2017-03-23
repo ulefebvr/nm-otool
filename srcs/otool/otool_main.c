@@ -24,7 +24,7 @@ static void			otool(t_ofile *ofile, int show)
 	ft_bzero(&otool, sizeof(t_otool));
 	if (otool_gather_information(&otool, ofile, show))
 	{
-		otool_print(&otool);
+		otool_print(&otool, ofile);
 	}
 }
 

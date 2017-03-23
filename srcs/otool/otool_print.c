@@ -14,6 +14,7 @@
 
 #include "libft.h"
 #include "otool.h"
+#include "swap.h"
 
 static int		ft_nbrlen_base(uint64_t i, int base)
 {
@@ -38,60 +39,70 @@ static int		ft_putunbr_base(int padding, uint64_t i, int base, int capitals)
 	return (1 + ret);
 }
 
-static void		print32(t_otool *otool, void *start, uint32_t size)
+static void		print32(t_otool *otool, void *start, uint32_t size, char swap)
 {
 	void			*ptr;
 	t_s32			*sect;
+	uint64_t		start_value;
 
 	ptr = start;
 	sect = (t_s32 *)otool->section;
+	start_value = (uint64_t)swap_uint32_t(sect->addr + (ptr - start), swap);
 	ft_print("Contents of (%s,%s) section", sect->segname, sect->sectname);
 	while (size--)
 	{
 		if (!((ptr - start) % 16))
 		{
 			write(1, "\n", 1);
-			ft_putunbr_base(8, sect->addr + (ptr - start), 16, 0);
+			ft_putunbr_base(8, start_value + (ptr - start), 16, 0);
 			write(1, "\t", 1);
 		}
 		ft_putunbr_base(2, (uint64_t)(unsigned char)(*(char *)ptr), 16, 0);
-		write(1, " ", 1);
 		ptr++;
+		if (!swap || (swap && !(((ptr - start)) % 4)))
+			write(1, " ", 1);
 	}
 	write(1, "\n", 1);
 }
 
-static void		print64(t_otool *otool, void *start, uint64_t size)
+static void		print64(t_otool *otool, void *start, uint64_t size, char swap)
 {
 	void			*ptr;
 	t_s64			*sect;
+	uint64_t		start_value;
 
 	ptr = start;
 	sect = (t_s64 *)otool->section;
+	start_value = swap_uint64_t(sect->addr + (ptr - start), swap);
 	ft_print("Contents of (%s,%s) section", sect->segname, sect->sectname);
 	while (size--)
 	{
 		if (!((ptr - start) % 16))
 		{
 			write(1, "\n", 1);
-			ft_putunbr_base(16, sect->addr + (ptr - start), 16, 0);
+			ft_putunbr_base(16, start_value + (ptr - start), 16, 0);
 			write(1, "\t", 1);
 		}
 		ft_putunbr_base(2, (uint64_t)(unsigned char)(*(char *)ptr), 16, 0);
-		write(1, " ", 1);
 		ptr++;
+		if (!swap || (swap && !(((ptr - start)) % 4)))
+			write(1, " ", 1);
 	}
 	write(1, "\n", 1);
 }
 
-void			otool_print(t_otool *otool)
+void			otool_print(t_otool *otool, t_ofile *ofile)
 {
 	if (otool->type == 32)
 	{
-		print32(otool, otool->section_content, ((t_s32 *)otool->section)->size);
+		print32(otool, otool->section_content,
+			swap_uint32_t(((t_s32 *)otool->section)->size, ofile->swap),
+			ofile->swap);
 	}
 	else
 	{
-		print64(otool, otool->section_content, ((t_s64 *)otool->section)->size);
+		print64(otool, otool->section_content,
+			swap_uint64_t(((t_s64 *)otool->section)->size, ofile->swap),
+			ofile->swap);
 	}
 }

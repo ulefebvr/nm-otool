@@ -42,19 +42,18 @@ static int		info_macho32(void *ptr, t_otool *otool, t_ofile *ofile)
 	i = 0;
 	segment = (t_sc32 *)ptr;
 	if (segment->nsects == 0)
-	{
 		return (0);
-	}
 	section = (t_s32 *)((char *)segment + sizeof(t_sc32));
 	if (ft_strcmp(section[i].segname, SEG_TEXT))
 		return (0);
 	otool->type = 32;
-	while (i < segment->nsects)
+	while (i < swap_uint32_t(segment->nsects, ofile->swap))
 	{
 		if (!ft_strcmp(section[i].sectname, SECT_TEXT))
 		{
 			otool->section = (void *)(section + i);
-			otool->section_content = (char *)ofile->ptr + section[i].offset;
+			otool->section_content = (char *)ofile->ptr
+				+ swap_uint32_t(section[i].offset, ofile->swap);
 			return (1);
 		}
 		i++;
@@ -112,7 +111,7 @@ int				otool_info_macho(uint32_t magic, t_otool *otool, t_ofile *ofile)
 		{
 			return (1);
 		}
-		lc = (t_lc *)((char *)lc + lc->cmdsize);
+		lc = (t_lc *)((char *)lc + swap_uint32_t(lc->cmdsize, ofile->swap));
 		i++;
 	}
 	return (0);
