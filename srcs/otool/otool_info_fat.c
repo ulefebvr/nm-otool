@@ -12,7 +12,6 @@
 
 #include <mach-o/loader.h>
 #include <mach-o/fat.h>
-
 #include "otool.h"
 #include "swap.h"
 #include "misc.h"
